@@ -2,3 +2,12 @@ body {
     background: lemonchiffon;
     height: 100vh;
 }
+section {
+    display: flex;
+    width: 90%;
+    overflow-x: auto;
+}
+
+section img {
+    width: 25vw;
+}
