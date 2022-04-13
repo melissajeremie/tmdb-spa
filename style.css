@@ -4,10 +4,17 @@ body {
 }
 section {
     display: flex;
-    width: 90%;
+    width: 100%;
     overflow-x: auto;
 }
 
 section img {
     width: 25vw;
+    transition: 250ms all;
+}
+
+img:hover {
+    margin-left: 0 40px;
+    transform: scale(1.15);
+    cursor: pointer;
 }

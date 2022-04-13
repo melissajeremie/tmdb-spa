@@ -4,14 +4,18 @@ const IMAGE_URL = 'https://image.tmdb.org/t/p/w500'
 
 const searchButton = document.querySelector('#search');
 const input = document.querySelector('#inputValue');
+const popular = document.querySelector('#popular');
 const searchResults = document.querySelector('#search-results');
 
+window.onload = function popularMovies()
 
 function movieLayout(movies){
     return movies.map((movie) => {
+        if (movie.poster_path) {
         return `
         <img src=${IMAGE_URL + movie.poster_path} data-movie-id=${movie.id}/>
         `;
+        }
     })
 }
 function createMovieContainer(movies) {
@@ -22,14 +26,19 @@ function createMovieContainer(movies) {
     <section class="section">
     ${movieLayout((movies))}
     </section>
-    <div class="content">
-    <p id="content-close">x</p>
-    </div>
     `;
 
     movieElement.innerHTML = movieTemplate;
 
     return movieElement;
+}
+
+function renderSearchResults(data) {
+    searchResults.innerHTML = '';
+    const movies = data.results;
+        const movieBlock = createMovieContainer(movies);
+        searchResults.appendChild(movieBlock)
+        console.log('Data: ', data);
 }
 searchButton.onclick = function(event) {
     event.preventDefault();
@@ -39,15 +48,9 @@ searchButton.onclick = function(event) {
     
     fetch(newUrl) 
     .then((res) => res.json())
-    .then((data) => {
-
-        const movies = data.results;
-        const movieBlock = createMovieContainer(movies);
-        searchResults.appendChild(movieBlock)
-        console.log('Data: ', data);
-    })
+    .then(renderSearchResults)
     .catch((error) => {
         console.log('Error: ', error)
     });
-
+input.value = '';
 }
