@@ -8,6 +8,7 @@ const searchButton = document.querySelector('#search');
 const input = document.querySelector('#inputValue');
 const popular = document.querySelector('#popular');
 const ratingsButton = document.querySelector('#popular-ratings');
+const info = document.querySelector('#info');
 const searchResults = document.querySelector('#search-results');
 
 
@@ -23,12 +24,23 @@ function movieLayout(movies){
     return movies.map((movie) => {
         if (movie.poster_path) {
         return `
-        <img class="posters" src=${IMAGE_URL + movie.poster_path} onclick="getMovieInfo()" data-movie-id=${movie.id}/>
-        <h4>${movie.original_title}</h4>
+        <img class="posters" src=${IMAGE_URL + movie.poster_path} data-movie-id=${movie.id}/>)" 
         `;
         }
     })
 }
+
+// function infoLayout(movie){
+//     return movie.map((movie) => {
+//          return `
+//         <h3>${movie.original_title}</h3>
+//         <h4>${movie.release_date}</h4>
+//         <h4>${movie.vote_average}</h4>
+//         <h5>${movie.overview}</h5>
+//         `;
+//         }
+//     )
+// }
 function createMovieContainer(movies) {
     const movieElement = document.createElement('div');
     movieElement.setAttribute('class', 'movie');
@@ -37,9 +49,6 @@ function createMovieContainer(movies) {
     <section class="section">
     ${movieLayout((movies))}
     </section>
-    // <div class="movie-info">
-    // <p id="content-close">x</p>
-    // </div>
     `;
 
     movieElement.innerHTML = movieTemplate;
@@ -47,26 +56,28 @@ function createMovieContainer(movies) {
     return movieElement;
 }
 
-// function createMovieInfo(id) {
+// function createMovieInfo(movie) {
 //  const infoElement = document.createElement('div');
 //  createMovieInfo.setAttribute('class', 'info');
-//  const movie = 
+
+//  const infoUrl = `
+//  https://api.themoviedb.org/3/movie/${movie.id}?api_key=${API_KEY}&language=en-US`
+
+//  fetch(infoUrl) 
+//  .then((res) => res.json())
+//  .then(renderMovieInfo)
+//  .catch((error) => {
+//      console.log('Error: ', error)
+//  });
 
 // const infoTemplate = `
-//     <section class="section">
-//     ${movieLayout((movies))}
-//     </section>
 //     <div class="movie-info">
-//     <p id="content-close">x</p>
+//     ${infoLayout((movie))}
 //     </div>
-//     `
+//     `;
 
-//  return `
-//  Title:${movie.original_title}
-//  Release Year:
-//  Runtime:
-//  Genre:
-//  Avg. Rating:`
+//     infoElement.innerHTML = infoTemplate;
+//  return infoElement;
 // };
 
 function renderSearchResults(data) {
@@ -76,7 +87,13 @@ function renderSearchResults(data) {
         searchResults.appendChild(movieBlock)
         console.log('Data: ', data);
 }
-
+// function renderMovieInfo(data) {
+//     info.innerHTML = '';
+//     const movies = data.results;
+//         const infoBlock = createMovieInfo(movies);
+//         info.appendChild(infoBlock)
+//         console.log('Data: ', data);
+// }
 function getPopularMovies(data) {
     const movies = data.results;
         const movieBlock = createMovieContainer(movies);
@@ -84,11 +101,11 @@ function getPopularMovies(data) {
         console.log('Data: ', data);
 }
 
-ratingsButton.onclick =function renderPopularRated(event) {
-    const movies = data.results;
-        const movieBlock = createMovieContainer(movies);
-        popular.appendChild(movieBlock)
-}
+// ratingsButton.onclick =function renderPopularRated(event) {
+//     const movies = data.results;
+//         const movieBlock = createMovieContainer(movies);
+//         popular.appendChild(movieBlock)
+// }
 searchButton.onclick = function(event) {
     event.preventDefault();
     const value = input.value;
